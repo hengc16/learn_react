@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+<body>
+    <div id ="list"></div>
+
+
+<script src="../js_link/react.development.js"></script>
+<script src="../js_link/react-dom.development.js"></script>
+<script src="../js_link/babel.min.js"></script>
+<script type="text/babel">
+    //data
+    const data_array = ["cat1",
+                        "cat2",
+                        "cat3",
+                        "cat4"
+                        ];
+    //创建虚拟DOM
+    const vDom = <ul>
+                {
+                    data_array.map((name,index) =>
+                     <li key={index}> 
+                     {name}
+                     </li>)
+                }
+                </ul>;
+    //渲染虚拟DOM
+    ReactDOM.render(vDom, document.getElementById("list"))
+
+</script>
+</body>
+</html>

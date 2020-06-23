@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+<body>
+    <div id ="upper"></div>
+    <div id = "lower"></div>
+
+<script src="../js_link/react.development.js"></script>
+<script src="../js_link/react-dom.development.js"></script>
+<script src="../js_link/babel.min.js"></script>
+<script type="text/babel">
+    const myId = "myid";
+    const myMsg = "Hello World";
+    //创建虚拟DOM
+    const vDom = <h1 id = {myId.toLowerCase()}> {myMsg.toLowerCase()}</h1>;
+    const vDomUpper = <h1 id = {myId.toUpperCase()}> {myMsg.toUpperCase()}</h1>;
+    //渲染虚拟DOM
+    ReactDOM.render(vDom, document.getElementById("lower"));
+    ReactDOM.render(vDomUpper, document.getElementById("upper"))
+
+</script>
+</body>
+</html>
