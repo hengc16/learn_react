@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+<body>
+    <div id ="container1"></div>
+    <div id ="container2"></div>
+
+
+<script src="../js_link/react.development.js"></script>
+<script src="../js_link/react-dom.development.js"></script>
+<script src="../js_link/babel.min.js"></script>
+<script src="../js_link/prop-types.js"></script>
+<script type="text/babel">
+    //1.定义组件
+    //a.工厂函数组件。
+    
+    function MyComponent(props){
+        return (
+            <ul>
+                <li>name : {props.name}</li>
+                <li>age: {props.age}</li>
+                <li>sex: {props.sex}</li>
+            </ul>
+        )
+    }
+    //组件标签
+    const p1 = {
+        name : 'Jay',
+        age : 21,
+        sex : 'male'
+    }
+    const p2 = {
+        name : 'Tina',
+        age : 19,
+        sex : 'female'
+    }
+    //组件属性默认值
+    MyComponent.defaultProps = {
+        sex: 'male',
+        age: 18
+    }
+    //组件属性检查
+    MyComponent.prototype = {
+        name : PropTypes.string.isRequired,
+        age : PropTypes.number,
+
+    }
+    //b. ES6类组件
+    class MyComponent2 extends React.Component{
+        render(){
+            //注意这样要用this. 来调用props的标签属性
+            return (
+            <ul>
+                <li>name:{this.props.name}</li>
+                <li>age: {this.props.age}</li>
+                <li>sex: {this.props.sex}</li>
+            </ul>
+        )
+        }
+    }
+    //2. 渲染组件
+    ReactDOM.render(<MyComponent {...p1}/>, document.getElementById('container1'));
+    ReactDOM.render(<MyComponent2 {...p2}/>, document.getElementById('container2'));
+</script>
+</body>
+</html>

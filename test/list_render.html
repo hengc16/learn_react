@@ -8,6 +8,7 @@
 </head>
 <body>
     <div id ="list"></div>
+    <div id = list2></div>
 
 
 <script src="../js_link/react.development.js"></script>
@@ -15,15 +16,38 @@
 <script src="../js_link/babel.min.js"></script>
 <script type="text/babel">
     //data
-    const data_array = ["cat1",
-                        "cat2",
-                        "cat3",
-                        "cat4"
+    const data_array = ["151",
+                        '168',
+                        "179",
+                        "321",
+                        "387",
+                        '661',
+                        '670',
+                        '955',
+                        '555',
+                        '592',
+                        '617',
+                        '809',
+                        '828'
                         ];
+    const data_array2 = ['321',
+                         '531',
+                         '648',
+                         '670',
+                         '872',
+                         '868',
+                         '690',
+                         '278'
+                        ]
     //创建虚拟DOM
+    const vDom2 = <ul>{
+                        data_array2.sort().map((a, index) => <li key = {index}> {a} </li>)
+                    }
+                    </ul>;
     const vDom = <ul>
                 {
-                    data_array.map((name,index) =>
+                    
+                    data_array.sort().map((name,index) =>
                      <li key={index}> 
                      {name}
                      </li>)
@@ -31,6 +55,8 @@
                 </ul>;
     //渲染虚拟DOM
     ReactDOM.render(vDom, document.getElementById("list"))
+    ReactDOM.render(vDom2, document.getElementById("list2"))
+
 
 </script>
 </body>
