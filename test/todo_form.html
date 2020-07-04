@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <title>Todo item update</title>
+    <script src="/js_link/babel.min.js"></script>
+    <script src="/js_link/react-dom.development.js"></script>
+    <script src="/js_link/react.development.js"></script>
+
+   <style>
+       .active {
+           background-color: #23b6ff;
+       }
+   </style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+   class TodoHD extends React.Component {
+       constructor() {
+           super();
+       }
+
+       render() {
+           return (
+               <div>
+                   <input type="text" ref="newItem"
+                          onKeyDown={ e => {
+                              if(e.key === 'Enter') {
+                                  this.add(this.refs.newItem.value)
+                              }
+
+                          }}/>
+                   <button onClick={
+                       () => this.add(this.refs.newItem.value)
+                   }>add new task</button>
+               </div>
+           )
+       }
+
+       add(item) {
+           this.props.addTodo(item);
+       }
+   }
+
+   class TodoItem extends React.Component {
+       constructor() {
+           super();
+       }
+
+       render() {
+           return (
+               <div>
+                   <input type="checkbox"
+                          checked={this.props.data.done}
+                          onChange={ () => {
+                              this.props.updateHelper(this.props.data.id, !this.props.data.done)
+                          } }
+                   />
+
+                   <span>{this.props.data.title}</span>
+
+                   <button onClick={
+                       () => {
+                           this.props.delHelper(this.props.data.id)}
+                   }>delete</button>
+               </div>
+           )
+       }
+   }
+
+   class TodoBD extends React.Component {
+       constructor() {
+           super();
+       }
+
+       render() {
+           return(
+               <div>
+                   {
+                       this.props.todoList.filter(item => {
+                           const type = this.props.showType;
+                           if(type === 1) return item;
+                           if(type === 2) return item.done;
+                           if(type === 3) return !item.done;
+                       }).map(item => {
+                           return <TodoItem key={item.id}
+                                            data={item}
+                                            updateHelper={this.props.updateItem}
+                                            delHelper={this.props.deleteItem}
+                                   />
+                       })
+                   }
+               </div>
+           )
+       }
+   }
+
+   class TodoFT extends React.Component {
+       constructor() {
+           super();
+       }
+
+       render() {
+           const list = this.props.todoList;
+           return (
+               <div>
+                   <button onClick={() => { this.props.changeType(1) }}
+                           className={this.props.type === 1 ? 'active' : null}
+                   >
+                       show all ({ list.length })
+                   </button>
+
+                   <button onClick={() => { this.props.changeType(2) }}
+                           className={this.props.type === 2 ? 'active' : null}
+                   >
+                       show done ({ list.filter(item => item.done).length })
+                   </button>
+
+                   <button onClick={() => { this.props.changeType(3) }}
+                           className={this.props.type === 3 ? 'active' : null}
+                   >
+                       show not done ({ list.filter(item => !item.done).length })
+                   </button>
+               </div>
+           )
+       }
+   }
+
+   class App extends React.Component {
+       constructor() {
+           super();
+           this.state = {
+               todos: [
+                   { id : 1, title : "task1", done : false},
+                   { id : 2, title : "task2", done : false},
+                   { id : 3, title : "task3", done : true},
+                   { id : 4, title : "task4", done : false},
+                   { id : 5, title : "task5", done : true},
+                   { id : 6, title : "task6", done : false}
+               ],
+               type: 1 // 1 - all, 2 - done, 3 - not done
+           }
+       }
+
+       render() {
+           return (
+               <div>
+                   <TodoHD addTodo={ this.addItem.bind(this) }/>
+                   <TodoBD todoList={ this.state.todos }
+                           updateItem={this.updateItem.bind(this)}
+                           deleteItem={this.deleteItem.bind(this)}
+                           showType={this.state.type}
+                   />
+                   <TodoFT todoList={this.state.todos}
+                           changeType={this.changeType.bind(this)}
+                           type={this.state.type}
+                   />
+               </div>
+           )
+       }
+
+       addItem(title) {
+           this.setState({
+               todos : [...this.state.todos, {
+                   id : this.state.todos.length + 1,
+                   title : title,
+                   done : false
+               }]
+           })
+       }
+
+       updateItem(id, done) {
+           this.setState({
+               todos : this.state.todos.map(item => item.id === id ? {...item, done : done} : item )
+           });
+       }
+
+       deleteItem(id) {
+           this.setState({
+               todos : this.state.todos.filter(item => item.id !== id)
+           });
+       }
+
+       changeType(type) {
+           this.setState({ type });
+       }
+   }
+
+   ReactDOM.render(
+       <App/>,
+       document.getElementById('root')
+   );
+</script>
+</body>
+</html>
