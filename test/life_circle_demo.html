@@ -8,8 +8,6 @@
 </head>
 <body>
     <div id ="container1"></div>
-    <div id ="container2"></div>
-
 
 <script src="../js_link/react.development.js"></script>
 <script src="../js_link/react-dom.development.js"></script>
@@ -17,19 +15,49 @@
 <script type="text/babel">
     //1.定义组件
     //a.工厂函数组件。
-    
-    function MyComponent(){
-        return <h2> 工厂函数组件</h2>;
-    }
-    //b. ES6类组件
-    class MyComponent2 extends React.Component{
-        render(){
-            return <h2> ES6类组件</h2>;
+    class App extends React.Component {
+        //初始state
+        constructor(){
+            super()
+            this.state = {
+                opacity: 1
+            }
+            this.destroyComponent = this.destroyComponent.bind(this)
         }
+        //加载好了后，写入计数器
+        componentDidMount(){
+            this.intervalId = setInterval(function() {
+                let {opacity} = this.state;
+                opacity -= 0.1
+                if(opacity <= 0){
+                    opacity = 1;
+                }
+                this.setState({opacity})
+            }.bind(this),200)
+        }
+        //自定义函数，点击后触发，触发后删除主div
+        destroyComponent(){
+            ReactDOM.unmountComponentAtNode(document.getElementById("container1"))
+        }
+        //在生命周期结束前，去删除计时器
+        componentWillUnmount(){
+            clearInterval(this.intervalId)
+        }
+
+        render(){
+            const {opacity} = this.state;
+            return (
+                <div>
+                    <h2 style = {{opacity:opacity}}>我太难了</h2>
+                    <button onClick = {this.destroyComponent}>我不活了</button>
+                    </div>
+            )
+        }
+        
     }
-    //2. 渲染组件
-    ReactDOM.render(<MyComponent/>, document.getElementById('container1'));
-    ReactDOM.render(<MyComponent2/>, document.getElementById('container2'));
+
+    ReactDOM.render(<App/>, document.getElementById('container1'));
+
 </script>
 </body>
 </html>
